@@ -110,12 +110,11 @@ export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProp
           letterSpacing: '0.08em',
           color: isSelected ? '#c8a800' : '#2a3a54',
           textShadow: isSelected ? '0 0 6px #c8a80066' : 'none',
-          maxWidth: ICON_SIZE,
-          whiteSpace: 'nowrap',
-          overflow: 'hidden',
-          textOverflow: 'ellipsis',
+          maxWidth: ICON_SIZE + 16,
+          whiteSpace: 'normal',
           textAlign: 'center',
           textTransform: 'uppercase',
+          lineHeight: 1.4,
         }}
       >
         {entry.label}

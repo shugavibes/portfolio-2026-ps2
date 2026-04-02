@@ -33,14 +33,18 @@ export default function Home() {
 
   return (
     <div
-      style={{ position: 'relative', width: '100%', height: '100dvh', minHeight: '100vh', overflow: 'hidden' }}
+      style={{
+        position: 'relative',
+        width: '100%',
+        height: '100dvh',
+        minHeight: '100vh',
+        overflow: 'hidden',
+      }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Layer 0: Near-black background */}
       <PS2Background />
 
-      {/* Layer 1: UI */}
       <div
         style={{
           position: 'relative',
@@ -51,17 +55,17 @@ export default function Home() {
           minHeight: '100vh',
         }}
       >
-        {/* Top void — 35% — lots of black space, PS2 feel */}
-        <div style={{ flex: '0 0 35%' }} />
+        {/* Top breathing room — small, just enough PS2 void feel */}
+        <div style={{ flex: '0 0 10%', minHeight: 40 }} />
 
-        {/* Nav zone — icon clusters centered at ~35% from top */}
+        {/* Nav — icon clusters */}
         <div
           style={{
             flexShrink: 0,
             display: 'flex',
             alignItems: 'center',
             justifyContent: 'center',
-            paddingBottom: '1.2rem',
+            paddingBottom: '1rem',
           }}
         >
           <PS2Nav
@@ -70,28 +74,29 @@ export default function Home() {
           />
         </div>
 
-        {/* Thin separator line */}
+        {/* Thin separator */}
         <div
           style={{
             flexShrink: 0,
             height: 1,
             margin: '0 auto',
-            width: '40%',
+            width: '50%',
             background:
               'linear-gradient(90deg, transparent, #0e2040 30%, #1a3860 50%, #0e2040 70%, transparent)',
           }}
         />
 
-        {/* Content zone — slides between sections */}
+        {/* Content — takes all remaining space, scrollable */}
         <div
           style={{
             flex: 1,
-            overflow: 'hidden auto',
+            overflowY: 'auto',
+            overflowX: 'hidden',
             display: 'flex',
             alignItems: 'flex-start',
             justifyContent: 'center',
-            paddingTop: '2rem',
-            paddingBottom: '4rem',
+            paddingTop: '1.6rem',
+            paddingBottom: '3.5rem',
             minHeight: 0,
           }}
         >
@@ -99,10 +104,10 @@ export default function Home() {
             <motion.div
               key={nav.activeSection}
               style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
-              initial={{ opacity: 0, x: 40 }}
+              initial={{ opacity: 0, x: 36 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -40 }}
-              transition={{ duration: 0.3, ease: 'easeInOut' }}
+              exit={{ opacity: 0, x: -36 }}
+              transition={{ duration: 0.28, ease: 'easeInOut' }}
             >
               {nav.activeSection === 0 && (
                 <WorkSection
@@ -120,10 +125,7 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Layer 2: CRT overlays */}
       <Overlays />
-
-      {/* BGM toggle */}
       <BGMToggle />
     </div>
   );

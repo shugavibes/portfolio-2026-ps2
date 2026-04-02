@@ -28,8 +28,8 @@ export function PS2Nav({ activeSection, onSectionChange }: PS2NavProps) {
             onClick={() => onSectionChange(section.id)}
             className="relative flex flex-col items-center cursor-pointer border-none bg-transparent"
             style={{ padding: 0 }}
-            animate={{ opacity: isActive ? 1 : 0.28 }}
-            whileHover={{ opacity: isActive ? 1 : 0.5 }}
+            animate={{ opacity: isActive ? 1 : 0.5 }}
+            whileHover={{ opacity: isActive ? 1 : 0.75 }}
             transition={{ duration: 0.35 }}
             aria-label={section.label}
             aria-current={isActive ? 'page' : undefined}

@@ -19,25 +19,28 @@ const AudioCtx = createContext<AudioContextValue>({
 
 export function AudioProvider({ children }: { children: React.ReactNode }) {
   const audio = useAudio();
-  const startedRef = useRef(false);
+  // Use a ref so the effect never needs to re-register listeners
+  const startRef = useRef(audio.start);
+  startRef.current = audio.start;
+  const firedRef = useRef(false);
 
-  // Start on first user interaction
   useEffect(() => {
     const handler = () => {
-      if (!startedRef.current) {
-        startedRef.current = true;
-        audio.start();
-      }
+      if (firedRef.current) return;
+      firedRef.current = true;
+      startRef.current();
     };
-    window.addEventListener('click', handler, { once: true });
-    window.addEventListener('keydown', handler, { once: true });
-    window.addEventListener('touchstart', handler, { once: true });
+
+    window.addEventListener('click', handler);
+    window.addEventListener('keydown', handler);
+    window.addEventListener('touchstart', handler);
     return () => {
       window.removeEventListener('click', handler);
       window.removeEventListener('keydown', handler);
       window.removeEventListener('touchstart', handler);
     };
-  }, [audio]);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []); // intentionally empty — register once, use ref to stay current
 
   return <AudioCtx.Provider value={audio}>{children}</AudioCtx.Provider>;
 }
