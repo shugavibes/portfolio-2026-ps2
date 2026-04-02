@@ -2,8 +2,10 @@
 
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { X } from 'lucide-react';
 import type { WorkEntry } from '@/types';
+
+// Matches PS2 screenshot 6: dark navy background, gold title, clean
+// label → value data rows. No box borders, no chrome — just floating text.
 
 interface DetailPanelProps {
   entry: WorkEntry;
@@ -17,54 +19,73 @@ export function DetailPanel({ entry, onClose }: DetailPanelProps) {
 
   return (
     <motion.div
-      initial={{ opacity: 0, y: 24 }}
+      initial={{ opacity: 0, y: 16 }}
       animate={{ opacity: 1, y: 0 }}
-      exit={{ opacity: 0, y: 24 }}
-      transition={{ duration: 0.3, ease: 'easeOut' }}
-      className="ps2-panel relative w-full max-w-2xl mx-auto rounded-xl overflow-hidden"
+      exit={{ opacity: 0, y: 12 }}
+      transition={{ duration: 0.28, ease: 'easeOut' }}
+      style={{
+        background: 'linear-gradient(160deg, #000d28 0%, #000518 100%)',
+        border: '1px solid #0e1e3a',
+        borderRadius: 6,
+        overflow: 'hidden',
+        width: '100%',
+        maxWidth: 580,
+        margin: '0 auto',
+      }}
     >
-      {/* Header bar */}
+      {/* Header row — icon strip + company + tabs */}
       <div
-        className="flex items-center justify-between px-5 py-3"
         style={{
-          borderBottom: '1px solid rgba(0, 71, 171, 0.4)',
-          background: 'rgba(0, 5, 30, 0.5)',
+          display: 'flex',
+          alignItems: 'center',
+          gap: '1rem',
+          padding: '0.75rem 1.4rem',
+          borderBottom: '1px solid #0e1e3a',
         }}
       >
-        <div className="flex items-center gap-3">
-          {/* Color indicator */}
-          <div
-            className="rounded"
-            style={{
-              width: 10,
-              height: 10,
-              background: entry.color,
-              boxShadow: `0 0 6px ${entry.color}`,
-            }}
-          />
-          <span
-            className="font-mono text-xs tracking-widest uppercase"
-            style={{ color: '#00cfff', textShadow: '0 0 6px #00cfff' }}
-          >
-            {entry.company}
-          </span>
-          <span className="font-mono text-xs" style={{ color: '#334466' }}>
-            / {entry.dates}
-          </span>
-        </div>
+        {/* Tiny color chip — the only color on the page */}
+        <div
+          style={{
+            width: 28,
+            height: 20,
+            borderRadius: 2,
+            background: `linear-gradient(160deg, #0a0a12 0%, ${entry.color}44 100%)`,
+            border: `1px solid ${entry.color}66`,
+            flexShrink: 0,
+          }}
+        />
 
-        {/* Tab toggle */}
-        <div className="flex items-center gap-1">
+        {/* Title — gold, PS2 style */}
+        <span
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.85rem',
+            color: '#c8a800',
+            letterSpacing: '0.06em',
+            textShadow: '0 0 8px #c8a80055',
+            flex: 1,
+          }}
+        >
+          {entry.company}
+        </span>
+
+        {/* Tab switcher — minimal PS2 menu style */}
+        <div style={{ display: 'flex', gap: '0.5rem' }}>
           {(['front', 'back'] as TabId[]).map((tab) => (
             <button
               key={tab}
               onClick={() => setActiveTab(tab)}
-              className="font-mono text-xs tracking-widest uppercase px-3 py-1 rounded cursor-pointer transition-all duration-150"
               style={{
-                background: activeTab === tab ? 'rgba(0, 71, 171, 0.4)' : 'transparent',
-                border: `1px solid ${activeTab === tab ? 'rgba(0, 207, 255, 0.5)' : 'rgba(51, 68, 102, 0.4)'}`,
-                color: activeTab === tab ? '#00cfff' : '#334466',
-                textShadow: activeTab === tab ? '0 0 4px #00cfff' : 'none',
+                background: 'none',
+                border: 'none',
+                cursor: 'pointer',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.55rem',
+                letterSpacing: '0.15em',
+                textTransform: 'uppercase',
+                color: activeTab === tab ? '#2277ee' : '#2a3a54',
+                textShadow: activeTab === tab ? '0 0 6px #2277ee88' : 'none',
+                padding: '2px 4px',
               }}
             >
               {'▸'} {tab}
@@ -73,72 +94,117 @@ export function DetailPanel({ entry, onClose }: DetailPanelProps) {
 
           <button
             onClick={onClose}
-            className="ml-3 cursor-pointer transition-opacity duration-150 hover:opacity-80"
             style={{
               background: 'none',
               border: 'none',
-              color: '#334466',
-              padding: '2px',
-              display: 'flex',
-              alignItems: 'center',
+              cursor: 'pointer',
+              fontFamily: 'var(--font-geist-mono), monospace',
+              fontSize: '0.55rem',
+              letterSpacing: '0.15em',
+              color: '#2a3a54',
+              marginLeft: '0.5rem',
+              padding: '2px 4px',
             }}
-            aria-label="Close detail panel"
           >
-            <X size={14} />
+            ✕
           </button>
         </div>
       </div>
 
       {/* Content */}
-      <div className="px-6 py-5" style={{ minHeight: 160 }}>
+      <div style={{ padding: '1.2rem 1.4rem', minHeight: 140 }}>
         <AnimatePresence mode="wait">
           {activeTab === 'front' ? (
             <motion.div
               key="front"
-              initial={{ opacity: 0, x: -12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: 12 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
             >
-              {/* Role */}
-              <p
-                className="font-mono text-sm mb-4 tracking-wide"
-                style={{ color: '#e8f4ff', textShadow: '0 0 4px rgba(232,244,255,0.2)' }}
+              {/* Role + dates — key/value style, PS2 Version Info aesthetic */}
+              <div
+                style={{
+                  display: 'grid',
+                  gridTemplateColumns: 'max-content 1fr',
+                  columnGap: '1.5rem',
+                  rowGap: '0.4rem',
+                  marginBottom: '1rem',
+                }}
               >
-                {entry.role}
-              </p>
+                <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.7rem', color: '#556688', letterSpacing: '0.06em' }}>
+                  Role
+                </span>
+                <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.7rem', color: '#dce8f8', letterSpacing: '0.02em' }}>
+                  {entry.role}
+                </span>
+                <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.7rem', color: '#556688', letterSpacing: '0.06em' }}>
+                  Period
+                </span>
+                <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.7rem', color: '#dce8f8' }}>
+                  {entry.dates}
+                </span>
+              </div>
 
               {/* Bullets */}
-              <ul className="space-y-2">
+              <div style={{ display: 'flex', flexDirection: 'column', gap: '0.45rem' }}>
                 {entry.bullets.map((bullet, i) => (
-                  <li
+                  <div
                     key={i}
-                    className="flex items-start gap-2 font-mono text-xs leading-relaxed"
-                    style={{ color: '#a0b8d8' }}
+                    style={{
+                      display: 'flex',
+                      gap: '0.6rem',
+                      fontFamily: 'var(--font-geist-mono), monospace',
+                      fontSize: '0.68rem',
+                      color: '#8090a8',
+                      lineHeight: 1.6,
+                    }}
                   >
-                    <span style={{ color: '#0047ab', flexShrink: 0, marginTop: 1 }}>›</span>
+                    <span style={{ color: '#1a3060', flexShrink: 0 }}>›</span>
                     {bullet}
-                  </li>
+                  </div>
                 ))}
-              </ul>
+              </div>
             </motion.div>
           ) : (
             <motion.div
               key="back"
-              initial={{ opacity: 0, x: 12 }}
-              animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -12 }}
-              transition={{ duration: 0.2 }}
+              initial={{ opacity: 0 }}
+              animate={{ opacity: 1 }}
+              exit={{ opacity: 0 }}
+              transition={{ duration: 0.18 }}
             >
               <p
-                className="font-mono text-xs leading-relaxed italic"
-                style={{ color: '#a0b8d8', lineHeight: 1.8 }}
+                style={{
+                  fontFamily: 'var(--font-geist-mono), monospace',
+                  fontSize: '0.7rem',
+                  color: '#7090b0',
+                  lineHeight: 1.85,
+                  fontStyle: 'italic',
+                }}
               >
                 &ldquo;{entry.backContent}&rdquo;
               </p>
             </motion.div>
           )}
         </AnimatePresence>
+      </div>
+
+      {/* Footer hint — like PS2 button prompts */}
+      <div
+        style={{
+          padding: '0.5rem 1.4rem',
+          borderTop: '1px solid #0a1428',
+          display: 'flex',
+          gap: '1.5rem',
+        }}
+      >
+        <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.5rem', color: '#1a2a44', letterSpacing: '0.1em' }}>
+          ✕ CLOSE
+        </span>
+        <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.5rem', color: '#1a2a44', letterSpacing: '0.1em' }}>
+          △ SWITCH TAB
+        </span>
       </div>
     </motion.div>
   );

@@ -3,6 +3,10 @@
 import { motion } from 'framer-motion';
 import type { WorkEntry } from '@/types';
 
+// PS2 memory card save icon: dark square, near-black, with a bright inner
+// glow that pulses on selection. No color fill — the glow IS the identity.
+// When selected: white-blue light radiates from center, casts a halo below.
+
 interface WorkIconProps {
   entry: WorkEntry;
   index: number;
@@ -11,85 +15,107 @@ interface WorkIconProps {
   onClick: () => void;
 }
 
-export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProps) {
-  const active = isSelected || isFocused;
+const ICON_SIZE = 80;
 
+export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProps) {
   return (
     <motion.button
       onClick={onClick}
-      className="flex flex-col items-center gap-2 cursor-pointer bg-transparent border-none shrink-0"
-      whileHover={{ scale: 1.08 }}
-      whileTap={{ scale: 0.96 }}
+      className="flex flex-col items-center cursor-pointer bg-transparent border-none"
+      style={{ padding: 0, gap: 8 }}
       animate={{
-        scale: isSelected ? 1.1 : 1,
+        scale: isSelected ? 1.12 : isFocused ? 1.04 : 1,
+        opacity: isSelected ? 1 : isFocused ? 0.9 : 0.65,
       }}
-      transition={{ duration: 0.2, ease: 'easeOut' }}
+      whileHover={{ scale: isSelected ? 1.14 : 1.06, opacity: 0.9 }}
+      transition={{ duration: 0.25, ease: 'easeOut' }}
     >
-      {/* Disc tile */}
-      <motion.div
-        className="relative flex items-center justify-center rounded-xl"
-        style={{
-          width: 96,
-          height: 96,
-          background: entry.color,
-          border: `1px solid ${isSelected ? 'rgba(0, 207, 255, 0.9)' : active ? 'rgba(0, 207, 255, 0.5)' : 'rgba(255,255,255,0.08)'}`,
-          boxShadow: isSelected
-            ? `0 0 30px ${entry.color}66, 0 0 12px rgba(0,207,255,0.5), inset 0 0 20px rgba(0,0,0,0.3)`
-            : active
-            ? `0 0 16px ${entry.color}44, 0 0 6px rgba(0,207,255,0.3)`
-            : `0 0 8px ${entry.color}22`,
-        }}
-        animate={{
-          boxShadow: isSelected
-            ? [
-                `0 0 24px ${entry.color}66, 0 0 10px rgba(0,207,255,0.4)`,
-                `0 0 36px ${entry.color}88, 0 0 16px rgba(0,207,255,0.7)`,
-                `0 0 24px ${entry.color}66, 0 0 10px rgba(0,207,255,0.4)`,
-              ]
-            : `0 0 8px ${entry.color}22`,
-        }}
-        transition={isSelected ? { duration: 1.8, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.25 }}
-      >
-        {/* Glossy highlight */}
-        <div
+      {/* Memory card tile */}
+      <div style={{ position: 'relative', width: ICON_SIZE, height: ICON_SIZE }}>
+        {/* Base tile — dark, near-black with slight tint from entry.color */}
+        <motion.div
           style={{
-            position: 'absolute',
-            top: 6,
-            left: 8,
-            right: 8,
-            height: '35%',
-            background: 'linear-gradient(180deg, rgba(255,255,255,0.18) 0%, transparent 100%)',
-            borderRadius: '8px 8px 50% 50%',
-            pointerEvents: 'none',
-          }}
-        />
-
-        {/* Abbreviation */}
-        <span
-          className="font-mono font-bold tracking-widest select-none"
-          style={{
-            fontSize: entry.abbreviation.length > 2 ? '0.85rem' : '1.1rem',
-            color: isSelected ? '#ffffff' : 'rgba(255,255,255,0.75)',
-            textShadow: isSelected ? '0 0 8px rgba(255,255,255,0.6)' : 'none',
-            letterSpacing: '0.1em',
+            width: ICON_SIZE,
+            height: ICON_SIZE,
+            borderRadius: 4,
+            background: `linear-gradient(160deg, #0a0a12 0%, ${entry.color}18 100%)`,
+            border: `1px solid ${isSelected ? '#334466' : '#111820'}`,
+            position: 'relative',
+            overflow: 'hidden',
           }}
         >
-          {entry.abbreviation}
-        </span>
-      </motion.div>
+          {/* Inner glow — the PS2 signature: a bright centered light spot */}
+          <motion.div
+            style={{
+              position: 'absolute',
+              inset: 0,
+              background: isSelected
+                ? `radial-gradient(ellipse at 50% 55%, rgba(200,225,255,0.55) 0%, rgba(140,190,255,0.18) 40%, transparent 70%)`
+                : `radial-gradient(ellipse at 50% 55%, rgba(180,210,255,0.12) 0%, transparent 60%)`,
+            }}
+            animate={
+              isSelected
+                ? {
+                    opacity: [0.75, 1, 0.75],
+                  }
+                : { opacity: 1 }
+            }
+            transition={
+              isSelected
+                ? { duration: 1.6, repeat: Infinity, ease: 'easeInOut' }
+                : { duration: 0.3 }
+            }
+          />
+
+          {/* Color accent bar at bottom — thin, like a label strip */}
+          <div
+            style={{
+              position: 'absolute',
+              bottom: 0,
+              left: 0,
+              right: 0,
+              height: 3,
+              background: entry.color,
+              opacity: isSelected ? 0.9 : 0.3,
+            }}
+          />
+        </motion.div>
+
+        {/* Drop shadow glow — below the tile, PS2 style */}
+        {isSelected && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: [0.5, 0.9, 0.5] }}
+            transition={{ duration: 1.6, repeat: Infinity, ease: 'easeInOut' }}
+            style={{
+              position: 'absolute',
+              bottom: -10,
+              left: '50%',
+              transform: 'translateX(-50%)',
+              width: ICON_SIZE * 0.7,
+              height: 10,
+              background: 'rgba(180, 215, 255, 0.5)',
+              borderRadius: '50%',
+              filter: 'blur(8px)',
+            }}
+          />
+        )}
+      </div>
 
       {/* Label */}
       <span
-        className="font-mono text-center"
         style={{
-          fontSize: '0.6rem',
+          fontFamily: 'var(--font-geist-mono), monospace',
+          fontSize: '0.56rem',
           letterSpacing: '0.08em',
-          color: isSelected ? '#e8f4ff' : '#334466',
-          textShadow: isSelected ? '0 0 4px rgba(232,244,255,0.4)' : 'none',
-          maxWidth: 96,
+          color: isSelected ? '#c8a800' : '#2a3a54',
+          textShadow: isSelected ? '0 0 6px #c8a80066' : 'none',
+          maxWidth: ICON_SIZE,
           whiteSpace: 'nowrap',
           overflow: 'hidden',
           textOverflow: 'ellipsis',
+          textAlign: 'center',
+          textTransform: 'uppercase',
         }}
       >
         {entry.label}

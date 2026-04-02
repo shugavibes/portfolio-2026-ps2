@@ -5,8 +5,8 @@ import { motion, AnimatePresence } from 'framer-motion';
 import { content } from '@/content.config';
 
 export function ConnectSection() {
-  const [loading, setLoading] = useState(false);
   const [activeId, setActiveId] = useState<string | null>(null);
+  const [loading, setLoading] = useState(false);
 
   const handleConnect = (id: string, url: string) => {
     setActiveId(id);
@@ -19,97 +19,120 @@ export function ConnectSection() {
   };
 
   return (
-    <div className="w-full max-w-2xl mx-auto px-4">
-      {/* System panel */}
-      <div className="ps2-panel rounded-xl overflow-hidden">
-        {/* Panel header */}
-        <div
-          className="px-5 py-3 flex items-center justify-between"
-          style={{ borderBottom: '1px solid rgba(0, 71, 171, 0.4)' }}
+    <div style={{ width: '100%', maxWidth: 520, padding: '0 1rem' }}>
+      {/* Header — PS2 system config style */}
+      <div
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          paddingBottom: '0.6rem',
+          marginBottom: '0.5rem',
+          borderBottom: '1px solid #0a1428',
+        }}
+      >
+        <span
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.75rem',
+            color: '#c8a800',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            textShadow: '0 0 6px #c8a80044',
+          }}
         >
-          <span
-            className="font-mono text-xs tracking-widest uppercase"
-            style={{ color: '#00cfff', textShadow: '0 0 6px #00cfff' }}
-          >
-            SYSTEM / CONNECT
-          </span>
-          <span
-            className="font-mono text-xs"
-            style={{ color: '#334466' }}
-          >
-            {content.identity.name.toUpperCase()}
-          </span>
-        </div>
-
-        {/* Menu items */}
-        <div className="py-2">
-          {content.connect.map((item) => {
-            const isActive = activeId === item.id;
-            return (
-              <button
-                key={item.id}
-                onClick={() => handleConnect(item.id, item.url)}
-                className="w-full text-left font-mono cursor-pointer transition-all duration-150"
-                style={{
-                  background: 'none',
-                  border: 'none',
-                  padding: '0.75rem 1.5rem',
-                  display: 'flex',
-                  alignItems: 'center',
-                  gap: '0.75rem',
-                  borderLeft: isActive ? '2px solid #00cfff' : '2px solid transparent',
-                  backgroundColor: isActive ? 'rgba(0, 71, 171, 0.15)' : 'transparent',
-                }}
-                onMouseEnter={(e) => {
-                  (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'rgba(0, 71, 171, 0.1)';
-                  (e.currentTarget as HTMLButtonElement).style.borderLeft = '2px solid rgba(0, 207, 255, 0.5)';
-                }}
-                onMouseLeave={(e) => {
-                  if (!isActive) {
-                    (e.currentTarget as HTMLButtonElement).style.backgroundColor = 'transparent';
-                    (e.currentTarget as HTMLButtonElement).style.borderLeft = '2px solid transparent';
-                  }
-                }}
-              >
-                <span style={{ color: '#0047ab', fontSize: '0.7rem' }}>›</span>
-                <span
-                  style={{
-                    fontSize: '0.8rem',
-                    color: isActive ? '#e8f4ff' : '#a0b8d8',
-                    letterSpacing: '0.08em',
-                    textShadow: isActive ? '0 0 6px rgba(0,207,255,0.3)' : 'none',
-                  }}
-                >
-                  {item.label}
-                </span>
-                {isActive && (
-                  <span
-                    className="ml-auto font-mono text-xs"
-                    style={{ color: '#00cfff', textShadow: '0 0 6px #00cfff' }}
-                  >
-                    LOADING...
-                  </span>
-                )}
-              </button>
-            );
-          })}
-        </div>
-
-        {/* Footer */}
-        <div
-          className="px-5 py-3 flex items-center justify-between"
-          style={{ borderTop: '1px solid rgba(0, 71, 171, 0.2)' }}
+          Connect
+        </span>
+        <span
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.55rem',
+            color: '#1a2a44',
+            letterSpacing: '0.08em',
+          }}
         >
-          <span className="font-mono text-xs" style={{ color: '#1a2a4a' }}>
-            SELECT: OPEN IN NEW TAB
-          </span>
-          <span className="font-mono text-xs" style={{ color: '#1a2a4a' }}>
-            ESC: BACK
-          </span>
-        </div>
+          {content.identity.name.toUpperCase()}
+        </span>
       </div>
 
-      {/* Full-screen loading overlay */}
+      {/* Menu items */}
+      <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {content.connect.map((item) => {
+          const isActive = activeId === item.id;
+          return (
+            <button
+              key={item.id}
+              onClick={() => handleConnect(item.id, item.url)}
+              style={{
+                background: isActive ? 'rgba(15, 35, 80, 0.5)' : 'none',
+                border: 'none',
+                borderBottom: '1px solid #090f1e',
+                cursor: 'pointer',
+                textAlign: 'left',
+                padding: '0.85rem 0.5rem',
+                display: 'flex',
+                alignItems: 'center',
+                gap: '0.85rem',
+                transition: 'background 0.15s ease',
+              }}
+              onMouseEnter={(e) => {
+                if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(15,35,80,0.25)';
+              }}
+              onMouseLeave={(e) => {
+                if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'none';
+              }}
+            >
+              <span
+                style={{
+                  fontFamily: 'var(--font-geist-mono), monospace',
+                  fontSize: '0.65rem',
+                  color: isActive ? '#2277ee' : '#1a2a44',
+                  minWidth: '0.8rem',
+                }}
+              >
+                ›
+              </span>
+              <span
+                style={{
+                  fontFamily: 'var(--font-geist-mono), monospace',
+                  fontSize: '0.82rem',
+                  color: isActive ? '#dce8f8' : '#6070a0',
+                  letterSpacing: '0.06em',
+                  flex: 1,
+                  textShadow: isActive ? '0 0 8px #dce8f833' : 'none',
+                }}
+              >
+                {item.label}
+              </span>
+              {isActive && (
+                <span
+                  style={{
+                    fontFamily: 'var(--font-geist-mono), monospace',
+                    fontSize: '0.58rem',
+                    color: '#2277ee',
+                    letterSpacing: '0.12em',
+                    textShadow: '0 0 6px #2277ee88',
+                  }}
+                >
+                  LOADING...
+                </span>
+              )}
+            </button>
+          );
+        })}
+      </div>
+
+      {/* Footer hints */}
+      <div style={{ display: 'flex', gap: '2rem', marginTop: '1.2rem' }}>
+        <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.5rem', color: '#111e36', letterSpacing: '0.1em' }}>
+          × ENTER
+        </span>
+        <span style={{ fontFamily: 'var(--font-geist-mono), monospace', fontSize: '0.5rem', color: '#111e36', letterSpacing: '0.1em' }}>
+          ○ BACK
+        </span>
+      </div>
+
+      {/* LOADING overlay */}
       <AnimatePresence>
         {loading && (
           <motion.div
@@ -117,15 +140,16 @@ export function ConnectSection() {
             initial={{ opacity: 0 }}
             animate={{ opacity: 1 }}
             exit={{ opacity: 0 }}
-            transition={{ duration: 0.15 }}
+            transition={{ duration: 0.12 }}
           >
             <span
-              className="font-mono tracking-widest uppercase"
               style={{
-                color: '#00cfff',
-                fontSize: '1rem',
-                textShadow: '0 0 16px #00cfff, 0 0 4px #00cfff',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.9rem',
+                color: '#2277ee',
                 letterSpacing: '0.3em',
+                textTransform: 'uppercase',
+                textShadow: '0 0 16px #2277ee88',
               }}
             >
               LOADING...

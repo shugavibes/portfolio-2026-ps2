@@ -1,6 +1,7 @@
 'use client';
 
-import { motion } from 'framer-motion';
+import { motion, AnimatePresence } from 'framer-motion';
+import { DotClusterIcon } from '@/components/ui/DotClusterIcon';
 import type { SectionId, NavSection } from '@/types';
 
 const SECTIONS: NavSection[] = [
@@ -17,70 +18,76 @@ interface PS2NavProps {
 
 export function PS2Nav({ activeSection, onSectionChange }: PS2NavProps) {
   return (
-    <nav
-      className="flex items-center justify-center gap-8 md:gap-14"
-      aria-label="Main navigation"
-    >
+    <div className="relative flex items-center justify-center" style={{ gap: '3.5rem' }}>
       {SECTIONS.map((section) => {
         const isActive = section.id === activeSection;
+
         return (
           <motion.button
             key={section.id}
             onClick={() => onSectionChange(section.id)}
-            className="flex flex-col items-center gap-2 cursor-pointer bg-transparent border-none"
-            animate={{
-              scale: isActive ? 1.25 : 0.85,
-              opacity: isActive ? 1 : 0.35,
-            }}
-            transition={{ duration: 0.3, ease: 'easeInOut' }}
-            whileHover={{ opacity: isActive ? 1 : 0.65, scale: isActive ? 1.28 : 0.95 }}
+            className="relative flex flex-col items-center cursor-pointer border-none bg-transparent"
+            style={{ padding: 0 }}
+            animate={{ opacity: isActive ? 1 : 0.28 }}
+            whileHover={{ opacity: isActive ? 1 : 0.5 }}
+            transition={{ duration: 0.35 }}
             aria-label={section.label}
             aria-current={isActive ? 'page' : undefined}
           >
-            {/* Icon tile */}
+            {/* Dot cluster icon */}
             <motion.div
-              className="flex items-center justify-center rounded-lg"
-              style={{
-                width: 56,
-                height: 56,
-                background: isActive
-                  ? 'rgba(0, 71, 171, 0.3)'
-                  : 'rgba(51, 68, 102, 0.2)',
-                border: `1px solid ${isActive ? 'rgba(0, 207, 255, 0.7)' : 'rgba(51, 68, 102, 0.4)'}`,
-                boxShadow: isActive
-                  ? '0 0 20px rgba(0, 207, 255, 0.3), 0 0 6px rgba(0, 136, 255, 0.4), inset 0 0 12px rgba(0, 71, 171, 0.2)'
-                  : 'none',
-              }}
-              animate={{
-                boxShadow: isActive
-                  ? [
-                      '0 0 20px rgba(0,207,255,0.3), 0 0 6px rgba(0,136,255,0.4)',
-                      '0 0 28px rgba(0,207,255,0.5), 0 0 10px rgba(0,136,255,0.6)',
-                      '0 0 20px rgba(0,207,255,0.3), 0 0 6px rgba(0,136,255,0.4)',
-                    ]
-                  : '0 0 0px transparent',
-              }}
-              transition={isActive ? { duration: 2, repeat: Infinity, ease: 'easeInOut' } : { duration: 0.3 }}
+              animate={{ scale: isActive ? 1.2 : 0.82 }}
+              transition={{ duration: 0.35, ease: 'easeInOut' }}
             >
-              <span style={{ fontSize: 28, lineHeight: 1 }}>{section.emoji}</span>
+              <DotClusterIcon sectionId={section.id} isActive={isActive} size={44} />
             </motion.div>
 
-            {/* Label */}
-            <span
-              className="font-mono text-center"
+            {/* Label — only rendered at full opacity for active */}
+            <motion.span
+              animate={{
+                opacity: isActive ? 1 : 0.4,
+                y: isActive ? 0 : 2,
+              }}
+              transition={{ duration: 0.3 }}
               style={{
-                fontSize: '0.6rem',
-                letterSpacing: '0.12em',
-                color: isActive ? '#00cfff' : '#334466',
-                textShadow: isActive ? '0 0 6px #00cfff' : 'none',
+                display: 'block',
+                marginTop: '0.55rem',
+                fontFamily: 'var(--font-geist-mono), monospace',
+                fontSize: '0.55rem',
+                letterSpacing: '0.2em',
+                color: isActive ? '#2277ee' : '#2a3a54',
+                textShadow: isActive ? '0 0 8px #2277ee88' : 'none',
                 whiteSpace: 'nowrap',
+                textTransform: 'uppercase',
               }}
             >
               {section.label}
-            </span>
+            </motion.span>
+
+            {/* Selection cursor underline — PS2 style */}
+            <AnimatePresence>
+              {isActive && (
+                <motion.div
+                  initial={{ scaleX: 0, opacity: 0 }}
+                  animate={{ scaleX: 1, opacity: 1 }}
+                  exit={{ scaleX: 0, opacity: 0 }}
+                  transition={{ duration: 0.25 }}
+                  style={{
+                    position: 'absolute',
+                    bottom: -6,
+                    left: '50%',
+                    transform: 'translateX(-50%)',
+                    width: 20,
+                    height: 1,
+                    background: '#2277ee',
+                    boxShadow: '0 0 6px #2277ee',
+                  }}
+                />
+              )}
+            </AnimatePresence>
           </motion.button>
         );
       })}
-    </nav>
+    </div>
   );
 }

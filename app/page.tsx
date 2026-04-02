@@ -13,8 +13,6 @@ import { ConnectSection } from '@/components/sections/ConnectSection';
 import { useNavigation } from '@/hooks/useNavigation';
 import type { SectionId } from '@/types';
 
-const SECTION_TITLES = ['WORK.EXE', 'LATEST_IDEAS', 'MISC', 'CONNECT'];
-
 export default function Home() {
   const nav = useNavigation();
   const touchStartX = useRef<number | null>(null);
@@ -35,43 +33,36 @@ export default function Home() {
 
   return (
     <div
-      className="relative w-full overflow-hidden select-none"
-      style={{ height: '100dvh', minHeight: '100vh' }}
+      style={{ position: 'relative', width: '100%', height: '100dvh', minHeight: '100vh', overflow: 'hidden' }}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
     >
-      {/* Layer 0: Background wave animation */}
+      {/* Layer 0: Near-black background */}
       <PS2Background />
 
-      {/* Layer 1: Main UI */}
+      {/* Layer 1: UI */}
       <div
-        className="relative z-10 flex flex-col w-full"
-        style={{ height: '100dvh', minHeight: '100vh' }}
+        style={{
+          position: 'relative',
+          zIndex: 10,
+          display: 'flex',
+          flexDirection: 'column',
+          height: '100dvh',
+          minHeight: '100vh',
+        }}
       >
-        {/* Top zone — section label (15% of viewport) */}
-        <div
-          className="flex items-end justify-center pb-3"
-          style={{ height: '15%', flexShrink: 0 }}
-        >
-          <AnimatePresence mode="wait">
-            <motion.span
-              key={nav.activeSection}
-              className="font-mono text-xs tracking-widest uppercase"
-              style={{ color: '#1a3060', letterSpacing: '0.25em' }}
-              initial={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-              exit={{ opacity: 0 }}
-              transition={{ duration: 0.25 }}
-            >
-              {SECTION_TITLES[nav.activeSection]}
-            </motion.span>
-          </AnimatePresence>
-        </div>
+        {/* Top void — 35% — lots of black space, PS2 feel */}
+        <div style={{ flex: '0 0 35%' }} />
 
-        {/* Nav zone — PS2 icon bar (15% of viewport, vertically at ~30-45%) */}
+        {/* Nav zone — icon clusters centered at ~35% from top */}
         <div
-          className="flex items-center justify-center"
-          style={{ height: '15%', flexShrink: 0 }}
+          style={{
+            flexShrink: 0,
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            paddingBottom: '1.2rem',
+          }}
         >
           <PS2Nav
             activeSection={nav.activeSection}
@@ -79,30 +70,39 @@ export default function Home() {
           />
         </div>
 
-        {/* Divider */}
+        {/* Thin separator line */}
         <div
           style={{
-            height: 1,
-            background: 'linear-gradient(90deg, transparent, rgba(0,71,171,0.4) 30%, rgba(0,207,255,0.2) 50%, rgba(0,71,171,0.4) 70%, transparent)',
-            margin: '0 auto',
-            width: '80%',
             flexShrink: 0,
+            height: 1,
+            margin: '0 auto',
+            width: '40%',
+            background:
+              'linear-gradient(90deg, transparent, #0e2040 30%, #1a3860 50%, #0e2040 70%, transparent)',
           }}
         />
 
-        {/* Content zone — section content (remaining ~65%) */}
+        {/* Content zone — slides between sections */}
         <div
-          className="flex-1 flex items-start justify-center overflow-y-auto overflow-x-hidden pt-6 pb-16"
-          style={{ minHeight: 0 }}
+          style={{
+            flex: 1,
+            overflow: 'hidden auto',
+            display: 'flex',
+            alignItems: 'flex-start',
+            justifyContent: 'center',
+            paddingTop: '2rem',
+            paddingBottom: '4rem',
+            minHeight: 0,
+          }}
         >
           <AnimatePresence mode="wait">
             <motion.div
               key={nav.activeSection}
-              className="w-full flex justify-center"
-              initial={{ opacity: 0, x: 60 }}
+              style={{ width: '100%', display: 'flex', justifyContent: 'center' }}
+              initial={{ opacity: 0, x: 40 }}
               animate={{ opacity: 1, x: 0 }}
-              exit={{ opacity: 0, x: -60 }}
-              transition={{ duration: 0.35, ease: 'easeInOut' }}
+              exit={{ opacity: 0, x: -40 }}
+              transition={{ duration: 0.3, ease: 'easeInOut' }}
             >
               {nav.activeSection === 0 && (
                 <WorkSection
@@ -120,10 +120,10 @@ export default function Home() {
         </div>
       </div>
 
-      {/* Layer 2: CRT overlays (scanlines + vignette) */}
+      {/* Layer 2: CRT overlays */}
       <Overlays />
 
-      {/* BGM toggle — fixed bottom left */}
+      {/* BGM toggle */}
       <BGMToggle />
     </div>
   );

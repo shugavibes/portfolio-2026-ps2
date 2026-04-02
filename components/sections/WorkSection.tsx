@@ -21,36 +21,55 @@ export function WorkSection({
   const selectedEntry = selectedWork !== null ? content.work[selectedWork] : null;
 
   return (
-    <div className="flex flex-col items-center gap-6 w-full px-4">
-      {/* Identity block */}
-      <div className="text-center mb-2">
+    <div
+      style={{
+        display: 'flex',
+        flexDirection: 'column',
+        alignItems: 'center',
+        gap: '1.8rem',
+        width: '100%',
+        padding: '0 1rem',
+      }}
+    >
+      {/* Identity block — PS2 "Version Information" aesthetic */}
+      <div style={{ textAlign: 'center' }}>
         <h1
-          className="font-mono font-bold tracking-widest uppercase"
           style={{
-            fontSize: 'clamp(1.4rem, 4vw, 2.2rem)',
-            color: '#e8f4ff',
-            textShadow: '0 0 20px rgba(0,136,255,0.5), 0 0 6px rgba(0,207,255,0.3)',
-            letterSpacing: '0.18em',
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: 'clamp(1.2rem, 3.5vw, 1.8rem)',
+            fontWeight: 400,
+            letterSpacing: '0.22em',
+            textTransform: 'uppercase',
+            color: '#2277ee',
+            textShadow: '0 0 16px #2277ee55, 0 0 4px #2277ee44',
+            margin: 0,
           }}
         >
           {content.identity.name}
         </h1>
         <p
-          className="font-mono mt-1"
           style={{
-            fontSize: 'clamp(0.65rem, 1.5vw, 0.8rem)',
-            color: '#334466',
-            letterSpacing: '0.2em',
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.62rem',
+            letterSpacing: '0.22em',
             textTransform: 'uppercase',
+            color: '#2a3a54',
+            marginTop: '0.35rem',
           }}
         >
           {content.identity.label}
         </p>
       </div>
 
-      {/* Work icon row */}
+      {/* Work icon row — memory card browser style */}
       <div
-        className="flex items-end justify-center gap-3 md:gap-5 flex-wrap"
+        style={{
+          display: 'flex',
+          alignItems: 'flex-end',
+          justifyContent: 'center',
+          gap: '1rem',
+          flexWrap: 'wrap',
+        }}
         role="list"
         aria-label="Work experiences"
       >
@@ -68,7 +87,7 @@ export function WorkSection({
       </div>
 
       {/* Detail panel */}
-      <div className="w-full max-w-2xl">
+      <div style={{ width: '100%', maxWidth: 580 }}>
         <AnimatePresence mode="wait">
           {selectedEntry && (
             <DetailPanel

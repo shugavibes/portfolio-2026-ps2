@@ -7,7 +7,6 @@ interface FileRowProps {
   index: number;
   title: string;
   description: string;
-  rightLabel?: string;
   icon?: string;
   url?: string;
   accentColor?: string;
@@ -20,7 +19,7 @@ export function FileRow({
   description,
   icon,
   url,
-  accentColor = '#00cfff',
+  accentColor = '#2277ee',
   onClick,
 }: FileRowProps) {
   const [active, setActive] = useState(false);
@@ -38,21 +37,27 @@ export function FileRow({
 
   return (
     <motion.div
-      className="file-row"
-      style={{
-        borderLeft: active ? `2px solid ${accentColor}` : '2px solid transparent',
-        background: active ? `rgba(0, 71, 171, 0.15)` : 'transparent',
-      }}
-      whileHover={{
-        background: 'rgba(0, 71, 171, 0.1)',
-        borderLeft: `2px solid ${accentColor}88`,
-      }}
       onClick={handleClick}
+      style={{
+        display: 'flex',
+        alignItems: 'center',
+        gap: '0.85rem',
+        padding: '0.65rem 0.5rem',
+        cursor: url ? 'pointer' : 'default',
+        borderBottom: '1px solid #090f1e',
+      }}
+      whileHover={url ? { backgroundColor: 'rgba(20,50,100,0.18)' } : {}}
     >
-      {/* Index */}
+      {/* Row number */}
       <span
-        className="font-mono text-xs shrink-0"
-        style={{ color: '#334466', minWidth: '1.5rem', textAlign: 'right' }}
+        style={{
+          fontFamily: 'var(--font-geist-mono), monospace',
+          fontSize: '0.58rem',
+          color: '#1a2a44',
+          minWidth: '1.4rem',
+          textAlign: 'right',
+          letterSpacing: '0.04em',
+        }}
       >
         {String(index + 1).padStart(2, '0')}
       </span>
@@ -60,8 +65,13 @@ export function FileRow({
       {/* Icon (misc only) */}
       {icon && (
         <span
-          className="font-mono text-xs shrink-0"
-          style={{ color: accentColor, minWidth: '1rem' }}
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.7rem',
+            color: accentColor,
+            minWidth: '1rem',
+            opacity: 0.75,
+          }}
         >
           {icon}
         </span>
@@ -69,41 +79,60 @@ export function FileRow({
 
       {/* Cursor */}
       <motion.span
-        className="font-mono text-xs shrink-0"
-        style={{ color: accentColor }}
+        style={{
+          fontFamily: 'var(--font-geist-mono), monospace',
+          fontSize: '0.65rem',
+          color: active ? accentColor : '#1a2a44',
+          minWidth: '0.8rem',
+        }}
         initial={{ opacity: 0 }}
         whileHover={{ opacity: 1 }}
         animate={{ opacity: active ? 1 : 0 }}
+        transition={{ duration: 0.12 }}
       >
-        {'›'}
+        ›
       </motion.span>
 
       {/* Content */}
-      <div className="flex-1 min-w-0">
+      <div style={{ flex: 1, minWidth: 0 }}>
         <span
-          className="font-mono text-sm tracking-wide"
           style={{
-            color: active ? '#e8f4ff' : '#a0b8d8',
-            textShadow: active ? `0 0 6px ${accentColor}44` : 'none',
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.76rem',
+            color: active ? '#dce8f8' : '#8898b8',
+            letterSpacing: '0.02em',
           }}
         >
           {title}
         </span>
-        <span
-          className="font-mono text-xs ml-3"
-          style={{ color: '#334466' }}
-        >
-          — {description}
-        </span>
+        {description && (
+          <span
+            style={{
+              fontFamily: 'var(--font-geist-mono), monospace',
+              fontSize: '0.6rem',
+              color: '#2a3a54',
+              marginLeft: '0.75rem',
+            }}
+          >
+            — {description}
+          </span>
+        )}
       </div>
 
-      {/* Open prompt */}
+      {/* Open indicator */}
       {url && (
         <motion.span
-          className="font-mono text-xs shrink-0"
-          style={{ color: accentColor, textShadow: `0 0 6px ${accentColor}` }}
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.55rem',
+            color: accentColor,
+            letterSpacing: '0.1em',
+            textShadow: `0 0 6px ${accentColor}88`,
+            flexShrink: 0,
+          }}
           initial={{ opacity: 0 }}
           whileHover={{ opacity: 1 }}
+          transition={{ duration: 0.15 }}
         >
           OPEN ▶
         </motion.span>

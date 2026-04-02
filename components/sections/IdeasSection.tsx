@@ -5,45 +5,52 @@ import { content } from '@/content.config';
 
 export function IdeasSection() {
   return (
-    <div className="w-full max-w-2xl mx-auto px-4">
-      {/* Section header */}
+    <div style={{ width: '100%', maxWidth: 560, padding: '0 1rem' }}>
+      {/* PS2 panel header — gold label + dim meta */}
       <div
-        className="flex items-center gap-3 mb-6 pb-3"
-        style={{ borderBottom: '1px solid rgba(0, 71, 171, 0.3)' }}
+        style={{
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'baseline',
+          paddingBottom: '0.6rem',
+          marginBottom: '0.25rem',
+          borderBottom: '1px solid #0a1428',
+        }}
       >
         <span
-          className="font-mono text-xs tracking-widest uppercase"
-          style={{ color: '#334466' }}
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.75rem',
+            color: '#c8a800',
+            letterSpacing: '0.12em',
+            textTransform: 'uppercase',
+            textShadow: '0 0 6px #c8a80044',
+          }}
         >
-          /
+          Latest Ideas
         </span>
         <span
-          className="font-mono text-xs tracking-widest uppercase"
-          style={{ color: '#0047ab', letterSpacing: '0.18em' }}
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '0.55rem',
+            color: '#1a2a44',
+            letterSpacing: '0.08em',
+          }}
         >
-          LATEST_IDEAS
-        </span>
-        <span
-          className="font-mono text-xs ml-auto"
-          style={{ color: '#334466' }}
-        >
-          {content.ideas.length} ENTRIES
+          {content.ideas.length} entries
         </span>
       </div>
 
-      {/* File list */}
-      <div className="flex flex-col">
-        {content.ideas.map((idea, index) => (
-          <FileRow
-            key={idea.id}
-            index={index}
-            title={idea.title}
-            description={idea.description}
-            url={idea.url}
-            accentColor="#00cfff"
-          />
-        ))}
-      </div>
+      {content.ideas.map((idea, index) => (
+        <FileRow
+          key={idea.id}
+          index={index}
+          title={idea.title}
+          description={idea.description}
+          url={idea.url}
+          accentColor="#2277ee"
+        />
+      ))}
     </div>
   );
 }

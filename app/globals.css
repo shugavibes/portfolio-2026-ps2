@@ -2,13 +2,14 @@
 
 /* ─── PS2 Color System ─────────────────────────────────────── */
 @theme inline {
-  --color-ps2-bg-deep: #00001a;
-  --color-ps2-bg-mid: #000833;
-  --color-ps2-blue: #0047ab;
+  --color-ps2-void: #000008;
+  --color-ps2-navy: #000b25;
+  --color-ps2-blue: #2277ee;
   --color-ps2-cyan: #00cfff;
-  --color-ps2-white: #e8f4ff;
-  --color-ps2-ghost: #334466;
-  --color-ps2-glow: #0088ff;
+  --color-ps2-gold: #c8a800;
+  --color-ps2-white: #dce8f8;
+  --color-ps2-ghost: #2a3a54;
+  --color-ps2-dim: #556688;
 
   --font-mono: var(--font-geist-mono);
 }
@@ -22,13 +23,12 @@ html, body {
   height: 100%;
   margin: 0;
   padding: 0;
-  background-color: #00001a;
-  color: #e8f4ff;
-  font-family: var(--font-geist-mono), 'Courier New', monospace;
+  background-color: #000008;
+  color: #dce8f8;
   overflow: hidden;
 }
 
-/* ─── Scanlines Overlay ────────────────────────────────────── */
+/* ─── Scanlines ────────────────────────────────────────────── */
 .scanlines {
   position: fixed;
   inset: 0;
@@ -38,12 +38,12 @@ html, body {
     0deg,
     transparent,
     transparent 3px,
-    rgba(0, 0, 0, 0.06) 3px,
-    rgba(0, 0, 0, 0.06) 4px
+    rgba(0, 0, 0, 0.04) 3px,
+    rgba(0, 0, 0, 0.04) 4px
   );
 }
 
-/* ─── Vignette Overlay ─────────────────────────────────────── */
+/* ─── Vignette ─────────────────────────────────────────────── */
 .vignette {
   position: fixed;
   inset: 0;
@@ -51,57 +51,25 @@ html, body {
   z-index: 99;
   background: radial-gradient(
     ellipse at center,
-    transparent 45%,
-    rgba(0, 0, 10, 0.65) 100%
+    transparent 40%,
+    rgba(0, 0, 8, 0.8) 100%
   );
 }
 
-/* ─── Glow Utilities ───────────────────────────────────────── */
-.glow-cyan {
-  filter: drop-shadow(0 0 6px #00cfff) drop-shadow(0 0 2px #00cfff);
+/* ─── Dot glow (used in SVG dot clusters) ──────────────────── */
+.dot-glow-active {
+  filter: drop-shadow(0 0 5px #a0ccff) drop-shadow(0 0 2px #ffffff);
 }
 
-.glow-blue {
-  filter: drop-shadow(0 0 8px #0088ff) drop-shadow(0 0 3px #0047ab);
+.dot-glow-idle {
+  filter: drop-shadow(0 0 2px #2255aa);
 }
 
-.glow-bloom {
+/* ─── Memory card icon glow ────────────────────────────────── */
+.mc-icon-selected {
   filter:
-    drop-shadow(0 0 16px #00cfff)
-    drop-shadow(0 0 8px #0088ff)
-    drop-shadow(0 0 3px #00cfff);
-}
-
-.text-glow-cyan {
-  text-shadow:
-    0 0 8px #00cfff,
-    0 0 2px #00cfff;
-}
-
-.text-glow-blue {
-  text-shadow:
-    0 0 10px #0088ff,
-    0 0 4px #0047ab;
-}
-
-/* ─── PS2 Panel ────────────────────────────────────────────── */
-.ps2-panel {
-  background: rgba(0, 8, 51, 0.85);
-  border: 1px solid rgba(0, 71, 171, 0.6);
-  box-shadow:
-    0 0 20px rgba(0, 136, 255, 0.15),
-    inset 0 0 30px rgba(0, 8, 51, 0.4);
-  backdrop-filter: blur(4px);
-}
-
-/* ─── PS2 Nav Icon ─────────────────────────────────────────── */
-.nav-icon {
-  transition: transform 0.25s ease, filter 0.25s ease, opacity 0.25s ease;
-  cursor: pointer;
-}
-
-.nav-icon:hover {
-  filter: drop-shadow(0 0 10px #00cfff);
+    drop-shadow(0 6px 12px rgba(180, 210, 255, 0.6))
+    drop-shadow(0 2px 6px rgba(255, 255, 255, 0.4));
 }
 
 /* ─── Loading Screen ───────────────────────────────────────── */
@@ -109,39 +77,13 @@ html, body {
   position: fixed;
   inset: 0;
   z-index: 200;
-  background: #00001a;
+  background: #000008;
   display: flex;
   align-items: center;
   justify-content: center;
 }
 
-/* ─── File Row ─────────────────────────────────────────────── */
-.file-row {
-  display: flex;
-  align-items: baseline;
-  gap: 0.75rem;
-  padding: 0.6rem 1rem;
-  cursor: pointer;
-  border-left: 2px solid transparent;
-  transition: border-color 0.15s ease, background 0.15s ease;
-}
-
-.file-row:hover,
-.file-row.active {
-  background: rgba(0, 71, 171, 0.15);
-  border-left-color: #00cfff;
-}
-
 /* ─── Scrollbar ────────────────────────────────────────────── */
-::-webkit-scrollbar {
-  width: 4px;
-}
-
-::-webkit-scrollbar-track {
-  background: transparent;
-}
-
-::-webkit-scrollbar-thumb {
-  background: #334466;
-  border-radius: 2px;
-}
+::-webkit-scrollbar { width: 4px; }
+::-webkit-scrollbar-track { background: transparent; }
+::-webkit-scrollbar-thumb { background: #2a3a54; border-radius: 2px; }
