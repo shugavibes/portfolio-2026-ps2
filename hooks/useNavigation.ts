@@ -3,112 +3,78 @@
 import { useState, useEffect, useCallback } from 'react';
 import type { SectionId } from '@/types';
 
-const TOTAL_SECTIONS = 4;
-const TOTAL_WORK = 6;
+export type View = 'menu' | 'section';
 
-interface NavigationState {
-  activeSection: SectionId;
+interface NavState {
+  view: View;
+  focusedMenu: number;   // 0-3: which menu item is highlighted
+  activeSection: SectionId; // which section we entered
   selectedWork: number | null;
   focusedWork: number;
 }
 
-interface NavigationActions {
-  goToSection: (id: SectionId) => void;
-  nextSection: () => void;
-  prevSection: () => void;
-  selectWork: (index: number) => void;
+interface NavActions {
+  focusMenu: (i: number) => void;
+  enterSection: () => void;
+  backToMenu: () => void;
+  selectWork: (i: number) => void;
   closeDetail: () => void;
-  nextWork: () => void;
-  prevWork: () => void;
 }
 
-export function useNavigation(): NavigationState & NavigationActions {
+const TOTAL_SECTIONS = 4;
+const TOTAL_WORK = 6;
+
+export function useNavigation(): NavState & NavActions {
+  const [view, setView] = useState<View>('menu');
+  const [focusedMenu, setFocusedMenu] = useState(0);
   const [activeSection, setActiveSection] = useState<SectionId>(0);
   const [selectedWork, setSelectedWork] = useState<number | null>(null);
-  const [focusedWork, setFocusedWork] = useState<number>(0);
+  const [focusedWork, setFocusedWork] = useState(0);
 
-  const goToSection = useCallback((id: SectionId) => {
-    setActiveSection(id);
+  const focusMenu = useCallback((i: number) => {
+    setFocusedMenu(Math.max(0, Math.min(TOTAL_SECTIONS - 1, i)));
+  }, []);
+
+  const enterSection = useCallback(() => {
+    setActiveSection(focusedMenu as SectionId);
+    setView('section');
+    setSelectedWork(null);
+    setFocusedWork(0);
+  }, [focusedMenu]);
+
+  const backToMenu = useCallback(() => {
+    setView('menu');
     setSelectedWork(null);
   }, []);
 
-  const nextSection = useCallback(() => {
-    setActiveSection((s) => (((s + 1) % TOTAL_SECTIONS) as SectionId));
-    setSelectedWork(null);
-  }, []);
-
-  const prevSection = useCallback(() => {
-    setActiveSection((s) => ((((s - 1) + TOTAL_SECTIONS) % TOTAL_SECTIONS) as SectionId));
-    setSelectedWork(null);
-  }, []);
-
-  const selectWork = useCallback((index: number) => {
-    setSelectedWork((prev) => (prev === index ? null : index));
-    setFocusedWork(index);
+  const selectWork = useCallback((i: number) => {
+    setSelectedWork((prev) => (prev === i ? null : i));
+    setFocusedWork(i);
   }, []);
 
   const closeDetail = useCallback(() => {
     setSelectedWork(null);
   }, []);
 
-  const nextWork = useCallback(() => {
-    setFocusedWork((f) => (f + 1) % TOTAL_WORK);
-  }, []);
-
-  const prevWork = useCallback(() => {
-    setFocusedWork((f) => ((f - 1) + TOTAL_WORK) % TOTAL_WORK);
-  }, []);
-
   useEffect(() => {
-    const handleKey = (e: KeyboardEvent) => {
-      if (activeSection === 0) {
-        // Work section — arrow keys navigate work icons
-        if (e.key === 'ArrowRight') {
-          if (selectedWork !== null) {
-            nextWork();
-          } else {
-            nextSection();
-          }
-          return;
-        }
-        if (e.key === 'ArrowLeft') {
-          if (selectedWork !== null) {
-            prevWork();
-          } else {
-            prevSection();
-          }
-          return;
-        }
-        if (e.key === 'Enter' || e.key === ' ') {
-          e.preventDefault();
-          selectWork(focusedWork);
-          return;
-        }
-        if (e.key === 'Escape') {
-          closeDetail();
-          return;
-        }
+    const onKey = (e: KeyboardEvent) => {
+      if (view === 'menu') {
+        if (e.key === 'ArrowUp')   { e.preventDefault(); setFocusedMenu((f) => Math.max(0, f - 1)); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); setFocusedMenu((f) => Math.min(TOTAL_SECTIONS - 1, f + 1)); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterSection(); }
       } else {
-        if (e.key === 'ArrowRight') { nextSection(); return; }
-        if (e.key === 'ArrowLeft') { prevSection(); return; }
-        if (e.key === 'Escape') { closeDetail(); return; }
+        if (e.key === 'Escape') { backToMenu(); }
+        if (activeSection === 0) {
+          if (e.key === 'ArrowLeft')  setFocusedWork((f) => ((f - 1 + TOTAL_WORK) % TOTAL_WORK));
+          if (e.key === 'ArrowRight') setFocusedWork((f) => (f + 1) % TOTAL_WORK);
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectWork(focusedWork); }
+        }
       }
     };
+    window.addEventListener('keydown', onKey);
+    return () => window.removeEventListener('keydown', onKey);
+  }, [view, activeSection, focusedWork, enterSection, backToMenu, selectWork]);
 
-    window.addEventListener('keydown', handleKey);
-    return () => window.removeEventListener('keydown', handleKey);
-  }, [activeSection, selectedWork, focusedWork, nextSection, prevSection, nextWork, prevWork, selectWork, closeDetail]);
-
-  return {
-    activeSection,
-    selectedWork,
-    focusedWork,
-    goToSection,
-    nextSection,
-    prevSection,
-    selectWork,
-    closeDetail,
-    nextWork,
-    prevWork,
-  };
+  return { view, focusedMenu, activeSection, selectedWork, focusedWork,
+           focusMenu, enterSection, backToMenu, selectWork, closeDetail };
 }

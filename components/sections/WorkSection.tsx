@@ -1,5 +1,9 @@
 'use client';
 
+// Inside the "Browser" section — matches the PS2 memory card browser.
+// Gray radial gradient bg (set by SectionView), icons in a grid,
+// identity block at top (like the memory card info), detail panel on select.
+
 import { AnimatePresence } from 'framer-motion';
 import { WorkIcon } from '@/components/ui/WorkIcon';
 import { DetailPanel } from '@/components/ui/DetailPanel';
@@ -12,12 +16,7 @@ interface WorkSectionProps {
   onCloseDetail: () => void;
 }
 
-export function WorkSection({
-  selectedWork,
-  focusedWork,
-  onSelectWork,
-  onCloseDetail,
-}: WorkSectionProps) {
+export function WorkSection({ selectedWork, focusedWork, onSelectWork, onCloseDetail }: WorkSectionProps) {
   const selectedEntry = selectedWork !== null ? content.work[selectedWork] : null;
 
   return (
@@ -26,55 +25,57 @@ export function WorkSection({
         display: 'flex',
         flexDirection: 'column',
         alignItems: 'center',
-        gap: '1.8rem',
+        gap: '1.5rem',
         width: '100%',
-        padding: '0 1rem',
+        maxWidth: 680,
       }}
     >
-      {/* Identity block — PS2 "Version Information" aesthetic */}
-      <div style={{ textAlign: 'center' }}>
-        <h1
-          style={{
-            fontFamily: 'var(--font-geist-mono), monospace',
-            fontSize: 'clamp(1.2rem, 3.5vw, 1.8rem)',
-            fontWeight: 400,
-            letterSpacing: '0.22em',
-            textTransform: 'uppercase',
-            color: '#2277ee',
-            textShadow: '0 0 16px #2277ee55, 0 0 4px #2277ee44',
-            margin: 0,
-          }}
-        >
-          {content.identity.name}
-        </h1>
+      {/* Identity — PS2 "memory card owner" label style */}
+      <div style={{ alignSelf: 'flex-start', paddingLeft: '0.5rem' }}>
         <p
           style={{
             fontFamily: 'var(--font-geist-mono), monospace',
             fontSize: '0.62rem',
-            letterSpacing: '0.22em',
+            color: '#888',
+            letterSpacing: '0.12em',
             textTransform: 'uppercase',
-            color: '#2a3a54',
-            marginTop: '0.35rem',
+            margin: 0,
           }}
         >
           {content.identity.label}
         </p>
+        <h1
+          style={{
+            fontFamily: 'var(--font-geist-mono), monospace',
+            fontSize: '1.1rem',
+            fontWeight: 400,
+            letterSpacing: '0.2em',
+            textTransform: 'uppercase',
+            color: '#dddddd',
+            margin: '0.1rem 0 0',
+          }}
+        >
+          {content.identity.name}
+        </h1>
       </div>
 
-      {/* Work icon row — memory card browser style */}
+      {/* Icon grid — 3 columns × 2 rows, like the PS2 save file grid */}
       <div
         style={{
-          display: 'flex',
-          alignItems: 'flex-end',
-          justifyContent: 'center',
-          gap: '1rem',
-          flexWrap: 'wrap',
+          display: 'grid',
+          gridTemplateColumns: 'repeat(3, 1fr)',
+          gap: '1.2rem 2rem',
+          width: '100%',
         }}
         role="list"
         aria-label="Work experiences"
       >
         {content.work.map((entry, index) => (
-          <div key={entry.id} role="listitem">
+          <div
+            key={entry.id}
+            role="listitem"
+            style={{ display: 'flex', justifyContent: 'center' }}
+          >
             <WorkIcon
               entry={entry}
               index={index}
@@ -86,8 +87,8 @@ export function WorkSection({
         ))}
       </div>
 
-      {/* Detail panel */}
-      <div style={{ width: '100%', maxWidth: 580 }}>
+      {/* Detail panel — slides in when an icon is selected */}
+      <div style={{ width: '100%' }}>
         <AnimatePresence mode="wait">
           {selectedEntry && (
             <DetailPanel
