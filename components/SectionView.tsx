@@ -46,7 +46,7 @@ export function SectionView({
         // The memory card browser uses a gray gradient — faithful to PS2 screenshots 3-5
         // All other sections stay on dark navy
         background: isWork
-          ? 'radial-gradient(ellipse at 50% 38%, #787878 0%, #4a4a4a 45%, #222222 100%)'
+          ? 'radial-gradient(ellipse at 50% 38%, #9a9a9a 0%, #686868 45%, #383838 100%)'
           : 'transparent',
         display: 'flex',
         flexDirection: 'column',

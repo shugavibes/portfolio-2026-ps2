@@ -50,23 +50,23 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
           marginTop: '-4vh',
         }}
       >
-        {/* Left: animated dot cluster — changes with focused item */}
-        <div style={{ width: 80, height: 80, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
+        {/* Left: animated dot cluster — larger for presence */}
+        <div style={{ width: 140, height: 140, display: 'flex', alignItems: 'center', justifyContent: 'center' }}>
           <AnimatePresence mode="wait">
             <motion.div
               key={focusedMenu}
-              initial={{ opacity: 0, scale: 0.7 }}
+              initial={{ opacity: 0, scale: 0.65 }}
               animate={{ opacity: 1, scale: 1 }}
-              exit={{ opacity: 0, scale: 0.7 }}
-              transition={{ duration: 0.2 }}
+              exit={{ opacity: 0, scale: 0.65 }}
+              transition={{ duration: 0.22 }}
             >
-              <DotClusterIcon sectionId={focusedMenu} isActive size={64} />
+              <DotClusterIcon sectionId={focusedMenu} isActive size={120} />
             </motion.div>
           </AnimatePresence>
         </div>
 
         {/* Right: vertical label list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.6rem' }}>
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
           {SECTIONS.map((s, i) => {
             const isActive = i === focusedMenu;
             return (
@@ -82,19 +82,19 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
                   textAlign: 'left',
                 }}
                 animate={{
-                  opacity: isActive ? 1 : 0.32,
+                  opacity: isActive ? 1 : 0.6,
                 }}
                 transition={{ duration: 0.2 }}
               >
                 <span
                   style={{
                     fontFamily: 'var(--font-geist-mono), monospace',
-                    fontSize: isActive ? '1.35rem' : '0.82rem',
-                    fontWeight: isActive ? 400 : 300,
+                    fontSize: isActive ? '1.7rem' : '1rem',
+                    fontWeight: 400,
                     letterSpacing: isActive ? '0.04em' : '0.06em',
-                    color: isActive ? '#2277ee' : '#556688',
+                    color: isActive ? '#2277ee' : '#7a99cc',
                     textShadow: isActive
-                      ? '0 0 20px #2277ee66, 0 0 6px #2277ee44'
+                      ? '0 0 24px #2277ee88, 0 0 8px #2277ee55'
                       : 'none',
                     display: 'block',
                     lineHeight: 1,
