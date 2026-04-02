@@ -2,6 +2,7 @@
 
 import { useState, useEffect, useCallback } from 'react';
 import type { SectionId } from '@/types';
+import { playHover, playSelect, playBack } from '@/hooks/useAudio';
 
 export type View = 'menu' | 'section';
 
@@ -59,15 +60,15 @@ export function useNavigation(): NavState & NavActions {
   useEffect(() => {
     const onKey = (e: KeyboardEvent) => {
       if (view === 'menu') {
-        if (e.key === 'ArrowUp')   { e.preventDefault(); setFocusedMenu((f) => Math.max(0, f - 1)); }
-        if (e.key === 'ArrowDown') { e.preventDefault(); setFocusedMenu((f) => Math.min(TOTAL_SECTIONS - 1, f + 1)); }
-        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); enterSection(); }
+        if (e.key === 'ArrowUp')   { e.preventDefault(); playHover(); setFocusedMenu((f) => Math.max(0, f - 1)); }
+        if (e.key === 'ArrowDown') { e.preventDefault(); playHover(); setFocusedMenu((f) => Math.min(TOTAL_SECTIONS - 1, f + 1)); }
+        if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSelect(); enterSection(); }
       } else {
-        if (e.key === 'Escape') { backToMenu(); }
+        if (e.key === 'Escape') { playBack(); backToMenu(); }
         if (activeSection === 0) {
-          if (e.key === 'ArrowLeft')  setFocusedWork((f) => ((f - 1 + TOTAL_WORK) % TOTAL_WORK));
-          if (e.key === 'ArrowRight') setFocusedWork((f) => (f + 1) % TOTAL_WORK);
-          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); selectWork(focusedWork); }
+          if (e.key === 'ArrowLeft')  { playHover(); setFocusedWork((f) => ((f - 1 + TOTAL_WORK) % TOTAL_WORK)); }
+          if (e.key === 'ArrowRight') { playHover(); setFocusedWork((f) => (f + 1) % TOTAL_WORK); }
+          if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); playSelect(); selectWork(focusedWork); }
         }
       }
     };

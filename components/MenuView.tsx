@@ -12,6 +12,7 @@
 
 import { motion, AnimatePresence } from 'framer-motion';
 import { DotClusterIcon } from '@/components/ui/DotClusterIcon';
+import { playHover, playSelect } from '@/hooks/useAudio';
 
 const SECTIONS = [
   { id: 0, label: 'Browser' },
@@ -71,8 +72,8 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
             return (
               <motion.button
                 key={s.id}
-                onClick={() => { onFocus(i); onEnter(); }}
-                onMouseEnter={() => onFocus(i)}
+                onClick={() => { playSelect(); onFocus(i); onEnter(); }}
+                onMouseEnter={() => { playHover(); onFocus(i); }}
                 style={{
                   background: 'none',
                   border: 'none',

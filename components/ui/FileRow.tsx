@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
+import { playHover, playSelect } from '@/hooks/useAudio';
 
 interface FileRowProps {
   index: number;
@@ -25,6 +26,7 @@ export function FileRow({
   const [active, setActive] = useState(false);
 
   const handleClick = () => {
+    playSelect();
     if (url) {
       setActive(true);
       setTimeout(() => {
@@ -38,6 +40,7 @@ export function FileRow({
   return (
     <motion.div
       onClick={handleClick}
+      onHoverStart={playHover}
       style={{
         display: 'flex',
         alignItems: 'center',

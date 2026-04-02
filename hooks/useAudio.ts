@@ -73,6 +73,46 @@ function buildAudioGraph() {
   ctx.resume();
 }
 
+// ── UI Sound Effects ────────────────────────────────────────────────────────
+// All synthesized — no audio files. Three sounds matching PS2 UI feedback:
+//   playHover  — brief soft tick when cursor moves to a new item
+//   playSelect — two-tone ascending blip when confirming a selection
+//   playBack   — descending blip when pressing back/cancel
+
+function uiTone(freq: number, gainPeak: number, duration: number, delay = 0) {
+  if (!_ctx) return;
+  const ctx = _ctx;
+  const osc = ctx.createOscillator();
+  const g = ctx.createGain();
+  osc.type = 'sine';
+  osc.frequency.value = freq;
+  const t = ctx.currentTime + delay;
+  g.gain.setValueAtTime(0, t);
+  g.gain.linearRampToValueAtTime(gainPeak, t + 0.008);
+  g.gain.exponentialRampToValueAtTime(0.0001, t + duration);
+  osc.connect(g);
+  g.connect(ctx.destination);
+  osc.start(t);
+  osc.stop(t + duration + 0.01);
+}
+
+export function playHover() {
+  // Single soft tick — 900 Hz, very quiet, 60 ms
+  uiTone(900, 0.055, 0.06);
+}
+
+export function playSelect() {
+  // Two-tone ascending: 660 Hz then 990 Hz — PS2 confirm feel
+  uiTone(660, 0.1, 0.1, 0);
+  uiTone(990, 0.12, 0.1, 0.07);
+}
+
+export function playBack() {
+  // Two-tone descending: 880 Hz then 550 Hz — cancel/back feel
+  uiTone(880, 0.09, 0.09, 0);
+  uiTone(550, 0.07, 0.1, 0.07);
+}
+
 export function useAudio() {
   const [started, setStarted] = useState(false);
   const [muted, setMuted] = useState(false);

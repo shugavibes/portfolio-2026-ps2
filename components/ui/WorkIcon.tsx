@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import type { WorkEntry } from '@/types';
+import { playHover, playSelect } from '@/hooks/useAudio';
 
 // PS2 memory card save icon: dark square, near-black, with a bright inner
 // glow that pulses on selection. No color fill — the glow IS the identity.
@@ -20,7 +21,8 @@ const ICON_SIZE = 80;
 export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProps) {
   return (
     <motion.button
-      onClick={onClick}
+      onClick={() => { playSelect(); onClick(); }}
+      onHoverStart={playHover}
       className="flex flex-col items-center cursor-pointer bg-transparent border-none"
       style={{ padding: 0, gap: 8 }}
       animate={{

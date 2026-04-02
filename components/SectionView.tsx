@@ -7,6 +7,7 @@
 
 import { motion } from 'framer-motion';
 import type { SectionId } from '@/types';
+import { playBack } from '@/hooks/useAudio';
 import { WorkSection } from '@/components/sections/WorkSection';
 import { IdeasSection } from '@/components/sections/IdeasSection';
 import { MiscSection } from '@/components/sections/MiscSection';
@@ -138,7 +139,7 @@ export function SectionView({
       >
         <HintButton symbol="×" label="Enter" color="#4466bb" />
         <button
-          onClick={onBack}
+          onClick={() => { playBack(); onBack(); }}
           style={{
             background: 'none',
             border: 'none',

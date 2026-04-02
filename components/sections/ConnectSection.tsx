@@ -3,12 +3,14 @@
 import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import { content } from '@/content.config';
+import { playHover, playSelect } from '@/hooks/useAudio';
 
 export function ConnectSection() {
   const [activeId, setActiveId] = useState<string | null>(null);
   const [loading, setLoading] = useState(false);
 
   const handleConnect = (id: string, url: string) => {
+    playSelect();
     setActiveId(id);
     setLoading(true);
     setTimeout(() => {
@@ -76,6 +78,7 @@ export function ConnectSection() {
                 transition: 'background 0.15s ease',
               }}
               onMouseEnter={(e) => {
+                playHover();
                 if (!isActive) (e.currentTarget as HTMLButtonElement).style.background = 'rgba(15,35,80,0.25)';
               }}
               onMouseLeave={(e) => {
