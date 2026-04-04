@@ -77,9 +77,11 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
           </AnimatePresence>
         </div>
 
-        {/* Right: vertical label list — each item has a fixed-height slot so
-            the layout never reflows when the active font size changes. */}
-        <div style={{ display: 'flex', flexDirection: 'column' }}>
+        {/* Right: vertical label list.
+            scale() is used instead of fontSize so the layout never reflows —
+            transform doesn't affect document flow. transformOrigin left-center
+            keeps every label pinned to the left margin while it grows. */}
+        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
           {SECTIONS.map((s, i) => {
             const isActive = i === focusedMenu;
             return (
@@ -93,33 +95,31 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
                   padding: 0,
                   cursor: 'pointer',
                   textAlign: 'left',
-                  // Fixed slot height — accommodates the largest size with even padding
-                  height: '2.6rem',
-                  display: 'flex',
-                  alignItems: 'center',
+                  transformOrigin: 'left center',
                 }}
-                animate={{ opacity: isActive ? 1 : 0.6 }}
+                animate={{
+                  scale: isActive ? 1.7 : 1,
+                  opacity: isActive ? 1 : 0.6,
+                }}
                 transition={{ duration: 0.2 }}
               >
-                <motion.span
-                  animate={{
-                    fontSize: isActive ? '1.7rem' : '1rem',
-                    letterSpacing: isActive ? '0.04em' : '0.06em',
+                <span
+                  style={{
+                    fontFamily: 'var(--font-geist-mono), monospace',
+                    fontSize: '1rem',
+                    fontWeight: 400,
+                    letterSpacing: '0.06em',
                     color: isActive ? '#2277ee' : '#7a99cc',
                     textShadow: isActive
                       ? '0 0 24px #2277ee88, 0 0 8px #2277ee55'
-                      : '0 0 0px transparent',
-                  }}
-                  transition={{ duration: 0.2 }}
-                  style={{
-                    fontFamily: 'var(--font-geist-mono), monospace',
-                    fontWeight: 400,
+                      : 'none',
                     display: 'block',
                     lineHeight: 1,
+                    transition: 'color 0.2s ease',
                   }}
                 >
                   {s.label}
-                </motion.span>
+                </span>
               </motion.button>
             );
           })}
