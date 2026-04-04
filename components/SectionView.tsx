@@ -129,33 +129,6 @@ export function SectionView({
         {section === 2 && <MiscSection />}
         {section === 3 && <ConnectSection />}
         {section === 4 && <PlaySection />}
-        {/* Floating back button for Play — the emulator covers the bottom bar */}
-        {isPlay && (
-          <button
-            onClick={() => { playBack(); onBack(); }}
-            style={{
-              position: 'absolute',
-              bottom: '1.2rem',
-              left: '1.2rem',
-              zIndex: 50,
-              background: 'rgba(0,0,8,0.75)',
-              border: '1px solid #2277ee44',
-              borderRadius: '4px',
-              cursor: 'pointer',
-              padding: '0.4rem 0.8rem',
-              fontFamily: 'var(--font-geist-mono), monospace',
-              fontSize: '0.65rem',
-              letterSpacing: '0.12em',
-              color: '#2277ee',
-              display: 'flex',
-              alignItems: 'center',
-              gap: '0.4rem',
-            }}
-          >
-            <span style={{ color: '#bb4444', fontSize: '0.8rem' }}>○</span>
-            Back
-          </button>
-        )}
       </div>
 
       {/* Bottom hints — PS2 button prompts */}
