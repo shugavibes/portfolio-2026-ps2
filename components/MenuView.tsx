@@ -28,6 +28,17 @@ interface MenuViewProps {
   onEnter: () => void;
 }
 
+function prefetchRom() {
+  if (typeof document === 'undefined') return;
+  if (document.querySelector('link[data-rom-prefetch]')) return;
+  const link = document.createElement('link');
+  link.rel = 'prefetch';
+  link.href = '/api/rom/crash-bandicoot';
+  link.as = 'fetch';
+  link.setAttribute('data-rom-prefetch', '1');
+  document.head.appendChild(link);
+}
+
 export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
   return (
     <div
@@ -74,7 +85,7 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
               <motion.button
                 key={s.id}
                 onClick={() => { playSelect(); onFocus(i); onEnter(); }}
-                onMouseEnter={() => { playHover(); onFocus(i); }}
+                onMouseEnter={() => { playHover(); onFocus(i); if (s.id === 4) prefetchRom(); }}
                 style={{
                   background: 'none',
                   border: 'none',
