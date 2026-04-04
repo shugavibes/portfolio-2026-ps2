@@ -2,72 +2,20 @@
 <html lang="en">
 <head>
   <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-  <title>Play</title>
   <style>
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; background: #000008; overflow: hidden; }
-
-    #game {
-      width: 100%;
-      height: 100%;
-    }
-
-    /* Style the EmulatorJS loading screen to match the PS2 aesthetic */
-    #ejs-container, .ejs_parent {
-      background: #000008 !important;
-    }
-
-    /* Override EmulatorJS default styles */
-    .ejs_start_button {
-      background: rgba(0, 8, 51, 0.85) !important;
-      border: 1px solid rgba(0, 71, 171, 0.6) !important;
-      color: #2277ee !important;
-      font-family: monospace !important;
-      letter-spacing: 0.15em !important;
-      text-transform: uppercase !important;
-    }
-
-    .ejs_main_loading {
-      background: #000008 !important;
-    }
-
-    .ejs_loading_text {
-      color: #2277ee !important;
-      font-family: monospace !important;
-      letter-spacing: 0.2em !important;
-      text-transform: uppercase !important;
-    }
+    iframe { width: 100%; height: 100%; border: none; display: block; }
   </style>
 </head>
 <body>
-  <div id="game"></div>
-
   <script>
-    // EmulatorJS configuration
-    // ROM file: drop crash-bandicoot.bin (or .cue) into this folder
-    // and update EJS_gameUrl below.
-    EJS_player     = '#game';
-    EJS_core       = 'psx';
-    EJS_gameUrl    = '/emulator/crash-bandicoot.bin';
-    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-    EJS_color      = '#2277ee';
-    EJS_startOnLoaded = false;
-    EJS_Buttons = {
-      playPause:    true,
-      restart:      true,
-      mute:         true,
-      settings:     true,
-      fullscreen:   true,
-      saveState:    true,
-      loadState:    true,
-      screenRecord: false,
-      gamepad:      true,
-      cheat:        false,
-      volume:       true,
-      saveSavFiles: true,
-    };
+    // ps1fun.com's ifr.html reads `parent.code` and `parent.butt` to
+    // identify which game to load. Since /ps1-ifr is proxied through our
+    // server it shares our origin — parent access works.
+    window.code = '157f2f0083af47b3071358f836fd06217ed924031cfcb65e232110f068fb5a';
+    window.butt = 'Crash Bandicoot';
   </script>
-  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
+  <iframe src="/ps1-ifr" allow="fullscreen; autoplay" title="Crash Bandicoot"></iframe>
 </body>
 </html>
