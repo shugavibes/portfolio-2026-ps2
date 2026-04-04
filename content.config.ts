@@ -2,8 +2,8 @@ import type { SiteContent } from '@/types';
 
 export const content: SiteContent = {
   identity: {
-    name: 'Nico',
-    label: 'product lead & designer',
+    name: 'Shuga',
+    label: 'Product Leader & Builder',
   },
 
   work: [

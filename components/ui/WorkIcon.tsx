@@ -89,8 +89,7 @@ export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProp
                   maxWidth: '100%',
                   maxHeight: '100%',
                   objectFit: 'contain',
-                  opacity: isSelected ? 1 : 0.75,
-                  filter: 'brightness(0) invert(1)',
+                  opacity: isSelected ? 1 : 0.8,
                 }}
               />
             </div>
