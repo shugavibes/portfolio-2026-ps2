@@ -109,11 +109,11 @@ export function SectionView({
       <div
         style={{
           flex: 1,
-          overflow: 'hidden auto',
+          overflow: isPlay ? 'hidden' : 'hidden auto',
           display: 'flex',
-          alignItems: 'flex-start',
+          alignItems: isPlay ? 'stretch' : 'flex-start',
           justifyContent: 'center',
-          padding: '0.5rem 1rem 1rem',
+          padding: isPlay ? '0' : '0.5rem 1rem 1rem',
           minHeight: 0,
         }}
       >
