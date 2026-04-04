@@ -1,14 +1,15 @@
-// Edge runtime streams the 490MB ROM from Archive.org without timeout.
-// Proxying through our domain avoids CORS issues in EmulatorJS.
+// Proxy the ROM from GitHub releases through our domain.
+// Browser can't fetch it directly (CORS), but server-side fetch has no CORS restrictions.
 export const runtime = 'edge';
 
 export async function GET() {
   const upstream = await fetch(
-    'https://archive.org/download/crash-bandicoot-usa_202411/Crash%20Bandicoot%20%28USA%29.bin',
+    'https://github.com/shugavibes/portfolio-2026-ps2/releases/download/v1.0-assets/Crash.Bandicoot.USA.bin',
+    { redirect: 'follow' },
   );
 
   if (!upstream.ok) {
-    return new Response('ROM unavailable', { status: 502 });
+    return new Response(`ROM fetch failed: ${upstream.status}`, { status: 502 });
   }
 
   return new Response(upstream.body, {
