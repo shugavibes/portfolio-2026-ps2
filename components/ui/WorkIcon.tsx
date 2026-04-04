@@ -69,6 +69,33 @@ export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProp
             }
           />
 
+          {/* Company logo — centered in the tile */}
+          {entry.logo && (
+            <div
+              style={{
+                position: 'absolute',
+                inset: 0,
+                display: 'flex',
+                alignItems: 'center',
+                justifyContent: 'center',
+                padding: '14px',
+              }}
+            >
+              {/* eslint-disable-next-line @next/next/no-img-element */}
+              <img
+                src={entry.logo}
+                alt={entry.company}
+                style={{
+                  maxWidth: '100%',
+                  maxHeight: '100%',
+                  objectFit: 'contain',
+                  opacity: isSelected ? 1 : 0.75,
+                  filter: 'brightness(0) invert(1)',
+                }}
+              />
+            </div>
+          )}
+
           {/* Color accent bar at bottom — thin, like a label strip */}
           <div
             style={{

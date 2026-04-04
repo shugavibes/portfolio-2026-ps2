@@ -6,6 +6,7 @@ export interface WorkEntry {
   role: string;
   dates: string;
   abbreviation: string;
+  logo?: string;
   bullets: string[];
   backContent: string;
 }
