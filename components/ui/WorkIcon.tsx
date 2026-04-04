@@ -78,7 +78,7 @@ export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProp
                 display: 'flex',
                 alignItems: 'center',
                 justifyContent: 'center',
-                padding: '14px',
+                padding: '0',
               }}
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
@@ -88,7 +88,7 @@ export function WorkIcon({ entry, isSelected, isFocused, onClick }: WorkIconProp
                 style={{
                   maxWidth: '100%',
                   maxHeight: '100%',
-                  objectFit: 'contain',
+                  objectFit: 'cover',
                   opacity: isSelected ? 1 : 0.8,
                 }}
               />
