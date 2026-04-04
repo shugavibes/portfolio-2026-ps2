@@ -14,7 +14,7 @@ import { MiscSection } from '@/components/sections/MiscSection';
 import { ConnectSection } from '@/components/sections/ConnectSection';
 import { PlaySection } from '@/components/sections/PlaySection';
 
-const SECTION_TITLES = ['Browser', 'Network', 'Random cool things', 'Connect', 'Play'];
+const SECTION_TITLES = ['Browser', 'Network', 'Random', 'Connect', 'Play'];
 
 interface SectionViewProps {
   section: SectionId;
