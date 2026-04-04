@@ -1,17 +1,13 @@
 'use client';
 
-// PLAY section — EmulatorJS PS1 emulator running entirely in-browser.
-// Same-origin iframe (/emulator/index.html) so no cross-origin restrictions.
-//
-// To activate: drop your Crash Bandicoot ROM file named
-//   crash-bandicoot.bin  (or crash-bandicoot.cue + matching .bin tracks)
-// into the public/emulator/ directory, then redeploy.
+// PLAY section — Archive.org hosted Crash Bandicoot PS1 emulator.
+// Uses Archive.org's built-in browser emulator, no ROM hosting needed.
 
 export function PlaySection() {
   return (
-    <div style={{ width: '100%', height: '100%', position: 'relative' }}>
+    <div style={{ width: '100%', height: '100%', position: 'relative', background: '#000008' }}>
       <iframe
-        src="/emulator/index.html"
+        src="https://archive.org/embed/crash-bandicoot-usa_202411"
         style={{
           width: '100%',
           height: '100%',
@@ -19,6 +15,7 @@ export function PlaySection() {
           display: 'block',
         }}
         allow="fullscreen; autoplay"
+        allowFullScreen
         title="Crash Bandicoot — PS1"
       />
     </div>
