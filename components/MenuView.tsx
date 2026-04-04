@@ -77,8 +77,9 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
           </AnimatePresence>
         </div>
 
-        {/* Right: vertical label list */}
-        <div style={{ display: 'flex', flexDirection: 'column', gap: '0.9rem' }}>
+        {/* Right: vertical label list — each item has a fixed-height slot so
+            the layout never reflows when the active font size changes. */}
+        <div style={{ display: 'flex', flexDirection: 'column' }}>
           {SECTIONS.map((s, i) => {
             const isActive = i === focusedMenu;
             return (
@@ -92,29 +93,33 @@ export function MenuView({ focusedMenu, onFocus, onEnter }: MenuViewProps) {
                   padding: 0,
                   cursor: 'pointer',
                   textAlign: 'left',
+                  // Fixed slot height — accommodates the largest size with even padding
+                  height: '2.6rem',
+                  display: 'flex',
+                  alignItems: 'center',
                 }}
-                animate={{
-                  opacity: isActive ? 1 : 0.6,
-                }}
+                animate={{ opacity: isActive ? 1 : 0.6 }}
                 transition={{ duration: 0.2 }}
               >
-                <span
-                  style={{
-                    fontFamily: 'var(--font-geist-mono), monospace',
+                <motion.span
+                  animate={{
                     fontSize: isActive ? '1.7rem' : '1rem',
-                    fontWeight: 400,
                     letterSpacing: isActive ? '0.04em' : '0.06em',
                     color: isActive ? '#2277ee' : '#7a99cc',
                     textShadow: isActive
                       ? '0 0 24px #2277ee88, 0 0 8px #2277ee55'
-                      : 'none',
+                      : '0 0 0px transparent',
+                  }}
+                  transition={{ duration: 0.2 }}
+                  style={{
+                    fontFamily: 'var(--font-geist-mono), monospace',
+                    fontWeight: 400,
                     display: 'block',
                     lineHeight: 1,
-                    transition: 'font-size 0.2s ease, color 0.2s ease',
                   }}
                 >
                   {s.label}
-                </span>
+                </motion.span>
               </motion.button>
             );
           })}
