@@ -6,35 +6,18 @@
     * { margin: 0; padding: 0; box-sizing: border-box; }
     html, body { width: 100%; height: 100%; background: #000008; overflow: hidden; }
     #game { width: 100%; height: 100%; }
-    #debug { position: fixed; top: 0; left: 0; right: 0; background: rgba(0,0,0,0.8);
-             color: #0f0; font: 11px monospace; padding: 4px; z-index: 999; max-height: 120px; overflow: auto; }
   </style>
 </head>
 <body>
-  <div id="debug">Loading…</div>
   <div id="game"></div>
   <script>
-    const dbg = document.getElementById('debug');
-    const log = (msg) => { dbg.textContent += '\n' + msg; console.log(msg); };
-
-    // Test ROM endpoint before handing off to EmulatorJS
-    fetch('/api/rom/crash-bandicoot', { method: 'HEAD' })
-      .then(r => log('ROM HEAD: ' + r.status + ' ' + r.statusText + ' size=' + r.headers.get('content-length')))
-      .catch(e => log('ROM HEAD error: ' + e));
-
-    EJS_player    = '#game';
-    EJS_core      = 'pcsx_rearmed';
-    EJS_gameUrl   = '/api/rom/crash-bandicoot';
-    EJS_color     = '#2277ee';
+    EJS_player        = '#game';
+    EJS_core          = 'pcsx_rearmed';
+    EJS_gameUrl       = 'https://github.com/shugavibes/portfolio-2026-ps2/releases/download/v1.0-assets/Crash.Bandicoot.USA.bin';
+    EJS_color         = '#2277ee';
     EJS_startOnLoaded = true;
-    EJS_pathtodata = 'https://cdn.emulatorjs.org/stable/data/';
-    EJS_onGameStart = () => log('Game started!');
-    EJS_onLoadState = () => log('Load state');
-
-    window.onerror = (msg, src, line) => log('JS ERROR: ' + msg + ' @ ' + src + ':' + line);
+    EJS_pathtodata    = 'https://cdn.emulatorjs.org/stable/data/';
   </script>
-  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"
-    onerror="log('loader.js FAILED')"
-    onload="log('loader.js OK')"></script>
+  <script src="https://cdn.emulatorjs.org/stable/data/loader.js"></script>
 </body>
 </html>
