@@ -12,8 +12,9 @@ import { WorkSection } from '@/components/sections/WorkSection';
 import { IdeasSection } from '@/components/sections/IdeasSection';
 import { MiscSection } from '@/components/sections/MiscSection';
 import { ConnectSection } from '@/components/sections/ConnectSection';
+import { PlaySection } from '@/components/sections/PlaySection';
 
-const SECTION_TITLES = ['Browser', 'Network', 'System Config', 'Connect'];
+const SECTION_TITLES = ['Browser', 'Network', 'Random cool things', 'Connect', 'Play'];
 
 interface SectionViewProps {
   section: SectionId;
@@ -33,6 +34,7 @@ export function SectionView({
   onBack,
 }: SectionViewProps) {
   const isWork = section === 0;
+  const isPlay = section === 4;
 
   return (
     <motion.div
@@ -47,6 +49,8 @@ export function SectionView({
         // All other sections stay on dark navy
         background: isWork
           ? 'radial-gradient(ellipse at 50% 38%, #9a9a9a 0%, #686868 45%, #383838 100%)'
+          : isPlay
+          ? '#000008'
           : 'transparent',
         display: 'flex',
         flexDirection: 'column',
@@ -124,6 +128,7 @@ export function SectionView({
         {section === 1 && <IdeasSection />}
         {section === 2 && <MiscSection />}
         {section === 3 && <ConnectSection />}
+        {section === 4 && <PlaySection />}
       </div>
 
       {/* Bottom hints — PS2 button prompts */}

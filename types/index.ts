@@ -42,7 +42,7 @@ export interface SiteContent {
   connect: ConnectEntry[];
 }
 
-export type SectionId = 0 | 1 | 2 | 3;
+export type SectionId = 0 | 1 | 2 | 3 | 4;
 
 export interface NavSection {
   id: SectionId;

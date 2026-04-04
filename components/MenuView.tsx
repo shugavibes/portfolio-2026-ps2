@@ -17,8 +17,9 @@ import { playHover, playSelect } from '@/hooks/useAudio';
 const SECTIONS = [
   { id: 0, label: 'Browser' },
   { id: 1, label: 'Network' },
-  { id: 2, label: 'System Config' },
+  { id: 2, label: 'Random cool things' },
   { id: 3, label: 'Connect' },
+  { id: 4, label: 'Play' },
 ];
 
 interface MenuViewProps {

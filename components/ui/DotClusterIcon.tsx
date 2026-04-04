@@ -55,6 +55,15 @@ const DOT_PATTERNS: Record<number, Dot[]> = {
     { cx: 16, cy: 22, r: 1.4, brightness: 0.6 },
     { cx: 28, cy: 22, r: 1.4, brightness: 0.6 },
   ],
+  // PLAY — triangle play-button shape
+  4: [
+    { cx: 14, cy: 12, r: 2.0, brightness: 1 },
+    { cx: 14, cy: 22, r: 2.0, brightness: 1 },
+    { cx: 14, cy: 32, r: 2.0, brightness: 1 },
+    { cx: 22, cy: 17, r: 1.8, brightness: 0.9 },
+    { cx: 22, cy: 27, r: 1.8, brightness: 0.9 },
+    { cx: 30, cy: 22, r: 2.2, brightness: 1 },
+  ],
 };
 
 interface DotClusterIconProps {

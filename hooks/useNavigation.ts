@@ -22,7 +22,7 @@ interface NavActions {
   closeDetail: () => void;
 }
 
-const TOTAL_SECTIONS = 4;
+const TOTAL_SECTIONS = 5;
 const TOTAL_WORK = 6;
 
 export function useNavigation(): NavState & NavActions {
